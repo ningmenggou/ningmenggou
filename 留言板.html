@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .bigbox {
+            width: 600px;
+            margin: 0 auto;
+        }
+
+        .top {
+            height: 200px;
+            text-align: center;
+            background-color: skyblue;
+        }
+
+        .bot {
+            position: relative;
+            text-align: center;
+            background-color: aqua;
+        }
+
+        .bot>img {
+            top: -25px;
+            position: absolute;
+        }
+
+        img {
+            width: 50px;
+            height: 50px;
+            vertical-align: top;
+            border-radius: 50px;
+        }
+
+        .bot>div {
+            position: relative;
+            padding-top: 30px;
+        }
+
+        .bot>div>input {
+            width: 200px;
+            height: 20px;
+            margin-top: 10px;
+            border: none;
+        }
+
+        .bot>div>span {
+            position: absolute;
+            top: 40px;
+            left: 380px;
+            /* background-color: wheat; */
+        }
+
+        .bot>div>div {
+            width: 200px;
+            /* height: 50px; */
+            background-color: rgba(0, 0, 0, .5);
+            position: absolute;
+            left: 200px;
+            top: 60px;
+        }
+
+        .bot>button {
+            width: 200px;
+            height: 30px;
+            background-color: blue;
+            color: white;
+            margin-top: 20px;
+        }
+
+        #memoryList {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bigbox">
+        <div class="top">
+            QQ
+        </div>
+        <div class="bot">
+            <img src="../img/01.png" alt="">
+            <div>
+                <input id="nickName" type="text"><br>
+                <input id="cipher" type="password">
+                <span onclick="list()" id="pan">▼</span>
+                <div id="memoryList"></div>
+            </div>
+            <button onclick="logIn()">登录</button>
+        </div>
+    </div>
+    <script>
+        let arr = [];//定义一个全局数组
+        let memoryList = document.querySelector('#memoryList');//获取存储列表
+        let pan = document.querySelector('#pan');//获取下拉的按钮
+        let nickName = document.querySelector('#nickName');//获取输入框
+        let cipher = document.querySelector('#cipher');//获取密码框
+
+
+        let listAddition = function () {
+            let sum = '';
+            arr.forEach(v => {
+                sum += `
+                <p id='reveal' data-reveal='${v.nickNameValue}'>
+                    <img src="../img/01.png" alt="">
+                    ${v.nickNameValue}
+                    <span id='delete' data-delete='${v.cipherValue}'>X</span>
+                </p>`
+            });
+            memoryList.innerHTML = sum;
+            localStorage.setItem('arr', JSON.stringify(arr));//将数组数据存入本地
+        }//定义公用的函数
+
+        let storeData = localStorage.getItem('arr');//获取存储数据
+        if (storeData != null) {//判断储存值是否为空
+            arr = JSON.parse(storeData);
+            listAddition();
+        }
+
+
+        let logIn = () => {
+            let nickNameValue = nickName.value;//获取输入框值
+            let cipherValue = cipher.value;//获取密码框值
+            let obj = {
+                nickNameValue,
+                cipherValue,
+            }
+            arr.push(obj);
+            nickName.value = '';
+            cipher.value = '';
+            listAddition();
+        }
+
+        let d = 0;//定义一个变量来记录点击列表的次数
+        let list = () => {
+            d++;
+            if (d % 2 == 0) {
+                pan.innerHTML = '▼';
+                memoryList.style.display = 'none';
+            } else {
+                pan.innerHTML = '▲';
+                memoryList.style.display = 'block';
+            }
+
+        }
+
+        memoryList.onclick = (evt) => {
+            // console.log(evt.target);
+            if (evt.target.id == 'reveal') {
+                let custom = evt.target.dataset.reveal;
+                // console.log(custom);
+                arr.forEach(v => {
+                    if (v.nickNameValue == custom) {
+                        nickName.value = v.nickNameValue;
+                        cipher.value = v.cipherValue;
+                        d++;
+                        pan.innerHTML = '▼';
+                        memoryList.style.display = 'none';
+                        // console.log('aa');
+                    }
+                })
+            } else if (evt.target.id == 'delete') {
+                let custom2 = evt.target.dataset.delete;
+                // console.log(custom2);
+                arr = arr.filter(f => f.cipherValue != custom2);
+                // console.log('bb');
+                listAddition();
+            }
+        }
+    </script>
+</body>
+
+</html>

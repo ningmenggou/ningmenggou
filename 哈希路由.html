@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .redoud-viwes {
+            width: 500px;
+            height: 500px;
+            border: 5px solid red;
+        }
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="redoud-viwes"></div>
+    <div>
+        <a href="#/shouye">首页</a>
+        <a href="#/me">我的</a>
+    </div>
+    <script>
+        let content = [
+            {
+                path:"#/shouye",
+                ineer:`<div>首页是我</div>`
+            },
+            {
+                path:"#/me",
+                ineer:`<div>我最帅</div>`
+            }
+        ]
+
+        let arr =document.querySelectorAll('a');
+        window.onhashchange = () => {
+            let hash = location.hash;
+            let obj= content.find(v => v.path==hash);
+            document.querySelector('.redoud-viwes').innerHTML=obj.ineer;
+        }
+        
+
+        arr.forEach(v => {
+            v.onclick = () => {
+                arr.forEach(a => {
+                    a.style.backgroundColor='';
+                })
+                v.style.backgroundColor='red';
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="text" name="" id="">
+    <script>
+        let fn = function () {
+            console.log('判断');
+        }
+
+/* 
+        let antiShake = function () {
+            let times = null;
+            return function () { 
+                clearTimeout(times);
+                times = setTimeout(function () {
+                    fn();
+                },1000)
+            }
+        }
+
+        let newAntiShake = antiShake();
+        let ipt = document.querySelector('input');
+        ipt.oninput = function () {
+            console.log('input');
+            newAntiShake();
+        } */
+
+
+
+        function check (a,time) {
+            let times = null;
+            return function () { 
+                clearTimeout(times);
+                times = setTimeout(function () {
+                    a();
+                },time)
+            }
+        }
+
+        let newAntiShake = check(fn,1000);
+        let ipt = document.querySelector('input');
+        ipt.oninput = function () {
+            console.log('input');
+            newAntiShake();
+        }
+    </script>
+</body>
+
+</html>

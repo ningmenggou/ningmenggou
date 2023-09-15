@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=., initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="text">
+    <script>
+        let ipt = document.querySelector('input');
+        /*      let flag = false;
+             function fn() {
+                 console.log('判断内容');
+             }
+             ipt.oninput = () => {
+                 console.log('input');
+                 if (flag == true) {
+     
+                 } else {
+                     flag = true;
+                     setTimeout(function () {
+                         fn();
+                         flag = false;
+                     }, 1000);
+                 }
+             }
+      */
+
+        function fn() {
+            console.log('判断内容');
+        }
+        function check(fun, time) {
+            let flag = false;
+            return function () {
+                if (flag == true) {
+
+                } else {
+                    flag = true;
+                    setTimeout(function () {
+                        fun();
+                        flag = false;
+                    }, time);
+                }
+            }
+        }
+        let newCheck = check(fn,1000);
+        ipt.oninput = function () {
+            console.log('input');
+            newCheck();
+        }
+    </script>
+</body>
+
+</html>
